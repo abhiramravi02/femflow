@@ -1,0 +1,18 @@
+# Uncomment this line to define a global platform for your project
+platform :ios, '10.0'
+
+# Add your pods below
+target 'Runner' do
+  use_frameworks!
+  use_modular_headers!
+
+  # Pods for Runner
+  pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
+
+  target 'RunnerTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

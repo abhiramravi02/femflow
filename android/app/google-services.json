@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "310002637071",
+    "project_id": "femflow-562ea",
+    "storage_bucket": "femflow-562ea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310002637071:android:05090db518c9c8943f067a",
+        "android_client_info": {
+          "package_name": "com.bits.femflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnYP6h1lZ_AwPcNRu_G-hWqWB5nbWE0aQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
