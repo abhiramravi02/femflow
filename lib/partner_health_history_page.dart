@@ -194,16 +194,14 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
             ],
 
             const SizedBox(height: 24),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const FamilyHistoryPage()),
-                  );
-                },
-                child: const Text('Next'),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FamilyHistoryPage()),
+                );
+              },
+              child: const Text('Next'),
             ),
           ],
         ),

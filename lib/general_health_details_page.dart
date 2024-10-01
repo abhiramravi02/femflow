@@ -122,16 +122,15 @@ class _GeneralHealthDetailsPageState extends State<GeneralHealthDetailsPage> {
               ),
             ],
             const SizedBox(height: 32),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MenstrualHistoryPage()),
-                  );
-                },
-                child: const Text('Next'),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to Menstrual History Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MenstrualHistoryPage()),
+                );
+              },
+              child: const Text('Next'),
             ),
           ],
         ),

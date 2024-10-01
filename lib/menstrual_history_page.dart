@@ -194,16 +194,14 @@ class _MenstrualHistoryPageState extends State<MenstrualHistoryPage> {
               },
             ),
             const SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PregnancyHistoryPage()),
-                  );
-                },
-                child: const Text('Next'),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PregnancyHistoryPage()),
+                );
+              },
+              child: const Text('Next'),
             ),
           ],
         ),

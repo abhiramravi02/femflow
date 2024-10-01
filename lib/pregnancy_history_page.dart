@@ -175,16 +175,14 @@ class _PregnancyHistoryPageState extends State<PregnancyHistoryPage> {
               buildQuestionField('If yes, how many', _ectopicPregnanciesCountController),
             const SizedBox(height: 16),
 
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ContraceptiveSexualHistoryPage()),
-                  );
-                },
-                child: const Text('Next'),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ContraceptiveSexualHistoryPage()),
+                );
+              },
+              child: const Text('Next'),
             ),
           ],
         ),

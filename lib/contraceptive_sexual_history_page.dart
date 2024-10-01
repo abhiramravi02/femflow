@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'fertility_treatment_history_page.dart';
 
 class ContraceptiveSexualHistoryPage extends StatefulWidget {
-  final Function(Map<String, dynamic>) onDataSubmit; // Function to handle data submission
-
-  const ContraceptiveSexualHistoryPage({super.key, required this.onDataSubmit});
+  const ContraceptiveSexualHistoryPage({super.key});
 
   @override
   _ContraceptiveSexualHistoryPageState createState() => _ContraceptiveSexualHistoryPageState();
@@ -110,25 +108,14 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
               buildQuestionField('If yes, how?', _ovulationTimingDetailsController),
             const SizedBox(height: 16),
 
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // Collect data and pass it back to main
-                  widget.onDataSubmit({
-                    'contraceptionMethods': _selectedContraceptionMethods,
-                    'periodsRegularAfterPills': _periodsRegularAfterPills,
-                    'timeIntercourseAroundOvulation': _timeIntercourseAroundOvulation,
-                    'ovulationTimingDetails': _ovulationTimingDetailsController.text,
-                  });
-
-                  // Navigate to the next page
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const FertilityTreatmentHistoryPage()),
-                  );
-                },
-                child: const Text('Next'),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FertilityTreatmentHistoryPage()),
+                );
+              },
+              child: const Text('Next'),
             ),
           ],
         ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'general_health_details_page.dart';
+import 'menstrual_history_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const GeneralHealthDetailsPage()),
+                    MaterialPageRoute(builder: (context) => const MenstrualHistoryPage()),
                   );
                 },
                 child: const Text('Next'),

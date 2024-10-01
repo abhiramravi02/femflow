@@ -1,49 +1,27 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class SubmitData {
-  final Map<String, dynamic> homePageData;
-  final Map<String, dynamic> generalHealthData;
-  final Map<String, dynamic> menstrualHistoryData;
-  final Map<String, dynamic> pregnancyHistoryData;
-  final Map<String, dynamic> contraceptiveHistoryData;
-  final Map<String, dynamic> fertilityTreatmentData;
-  final Map<String, dynamic> partnerHealthData;
-  final Map<String, dynamic> familyHistoryData;
-
-  // Constructor to accept all data from different pages
-  SubmitData({
-    required this.homePageData,
-    required this.generalHealthData,
-    required this.menstrualHistoryData,
-    required this.pregnancyHistoryData,
-    required this.contraceptiveHistoryData,
-    required this.fertilityTreatmentData,
-    required this.partnerHealthData,
-    required this.familyHistoryData,
-  });
-
-  // Function to submit data to Firebase Firestore
-  Future<void> submitToFirebase() async {
+  // Method to store data into a local JSON file
+  Future<void> saveDataLocally(Map<String, dynamic> formData) async {
     try {
-      // Initialize Firestore instance
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      // Get the directory where the file will be saved
+      final directory = await getApplicationDocumentsDirectory();
+      final path = directory.path;
 
-      // Create a new document in the 'patient_data' collection
-      await firestore.collection('patient_data').add({
-        'homePageData': homePageData,
-        'generalHealthData': generalHealthData,
-        'menstrualHistoryData': menstrualHistoryData,
-        'pregnancyHistoryData': pregnancyHistoryData,
-        'contraceptiveHistoryData': contraceptiveHistoryData,
-        'fertilityTreatmentData': fertilityTreatmentData,
-        'partnerHealthData': partnerHealthData,
-        'familyHistoryData': familyHistoryData,
-        'timestamp': FieldValue.serverTimestamp(), // Adds timestamp to the data
-      });
+      // Create the JSON file
+      File file = File('$path/answers.json');
 
-      print("Data uploaded successfully!");
+      // Convert the form data to JSON format
+      String jsonData = jsonEncode(formData);
+
+      // Write the data to the file
+      await file.writeAsString(jsonData);
+
+      print("Data saved locally at $path/answers.json");
     } catch (e) {
-      print("Error uploading data to Firebase: $e");
+      print("Failed to save data locally: $e");
     }
   }
 }

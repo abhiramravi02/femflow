@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'partner_health_history_page.dart';
 
+
 class FertilityTreatmentHistoryPage extends StatefulWidget {
   const FertilityTreatmentHistoryPage({super.key});
 
@@ -79,16 +80,14 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
               buildTreatmentHistoryField('Canceled IVF attempts', _canceledIvfController, null),
             ],
             const SizedBox(height: 16),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const PartnersHealthHistoryPage()),
-                  );
-                },
-                child: const Text('Next'),
-              ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const PartnersHealthHistoryPage()),
+                );
+              },
+              child: const Text('Next'),
             ),
           ],
         ),
