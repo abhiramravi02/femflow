@@ -1,4 +1,7 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart'; // Import this for file path access
 
 class FamilyHistoryPage extends StatefulWidget {
   const FamilyHistoryPage({super.key});
@@ -175,6 +178,7 @@ class _FamilyHistoryPageState extends State<FamilyHistoryPage> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
+                _saveData(); // Call the save data function
                 print("Submitted");
               },
               child: const Text('Submit'),
@@ -215,6 +219,47 @@ class _FamilyHistoryPageState extends State<FamilyHistoryPage> {
         const SizedBox(height: 8),
       ],
     );
+  }
+
+  Future<void> _saveData() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/user_data.json';
+    File file = File(filePath);
+
+    // Check if the file exists
+    if (!(await file.exists())) {
+      await file.create(); // Create the file if it doesn't exist
+    }
+
+    // Read the existing data from the file
+    String existingData = await file.readAsString();
+    Map<String, dynamic> data = existingData.isNotEmpty ? json.decode(existingData) : {};
+
+    // Create a map for the new data
+    Map<String, dynamic> familyData = {
+      'mother_had_issues': _motherHadIssues,
+      'mother_issues_details': _motherIssuesDetailsController.text,
+      'family_history_infertility': _familyHistoryInfertility,
+      'family_infertility_details': _familyInfertilityDetailsController.text,
+      'bleeding_tendencies': _hasBleedingTendencies,
+      'strokes': _hasStrokes,
+      'cancer': _hasCancer,
+      'thyroid_disorders': _hasThyroidDisorders,
+      'diabetes': _hasDiabetes,
+      'tuberculosis': _hasTuberculosis,
+      'hpv': _hasHPV,
+      'hcv': _hasHCV,
+      'hiv': _hasHIV,
+      'heart_disease': _hasHeartDisease,
+      'high_blood_pressure': _hasHighBloodPressure,
+      'other_conditions': _familyHistoryOtherController.text,
+    };
+
+    // Merge new data with existing data
+    data['family_history'] = familyData;
+
+    // Write updated data back to the file
+    await file.writeAsString(json.encode(data), flush: true);
   }
 
   @override

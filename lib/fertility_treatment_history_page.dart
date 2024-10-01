@@ -1,6 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart'; // Import this for file path access
 import 'partner_health_history_page.dart';
-
 
 class FertilityTreatmentHistoryPage extends StatefulWidget {
   const FertilityTreatmentHistoryPage({super.key});
@@ -82,6 +84,7 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
+                _saveData(); // Call the save data function
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PartnersHealthHistoryPage()),
@@ -149,6 +152,47 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
         const Text('Outcome: Pregnant/Delivered/Ectopic/Miscarriage/Not pregnant'),
       ],
     );
+  }
+
+  Future<void> _saveData() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final filePath = '${directory.path}/user_data.json';
+    File file = File(filePath);
+
+    // Check if the file exists
+    if (!(await file.exists())) {
+      await file.create(); // Create the file if it doesn't exist
+    }
+
+    // Read the existing data from the file
+    String existingData = await file.readAsString();
+    Map<String, dynamic> data = existingData.isNotEmpty ? json.decode(existingData) : {};
+
+    // Create a map for the new data
+    Map<String, dynamic> fertilityData = {
+      'treated_for_infertility': _treatedForInfertility,
+      'physician': _physicianController.text,
+      'diagnosed_cause': _diagnosedCauseController.text,
+      'iui_cycles': _iuiCyclesController.text,
+      'iui_dates': _iuiDatesController.text,
+      'clomid_alone_cycles': _clomidAloneController.text,
+      'clomid_alone_dates': _clomidAloneDatesController.text,
+      'clomid_with_iui_cycles': _clomidWithIuiController.text,
+      'clomid_with_iui_dates': _clomidWithIuiDatesController.text,
+      'hcg_injections_cycles': _hcgInjectionsController.text,
+      'hcg_injections_dates': _hcgInjectionsDatesController.text,
+      'ivf_cycles': _ivfCyclesController.text,
+      'ivf_cycles_dates': _ivfCyclesDatesController.text,
+      'frozen_embryo_cycles': _frozenEmbryoCyclesController.text,
+      'frozen_embryo_dates': _frozenEmbryoDatesController.text,
+      'canceled_ivf_attempts': _canceledIvfController.text,
+    };
+
+    // Merge new data with existing data
+    data['fertility_history'] = fertilityData;
+
+    // Write updated data back to the file
+    await file.writeAsString(json.encode(data), flush: true);
   }
 
   @override

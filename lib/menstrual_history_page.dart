@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'pregnancy_history_page.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class MenstrualHistoryPage extends StatefulWidget {
   const MenstrualHistoryPage({super.key});
@@ -196,6 +199,7 @@ class _MenstrualHistoryPageState extends State<MenstrualHistoryPage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
+                _saveMenstrualData(); // Save the data before navigating
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const PregnancyHistoryPage()),
@@ -207,6 +211,57 @@ class _MenstrualHistoryPageState extends State<MenstrualHistoryPage> {
         ),
       ),
     );
+  }
+
+  // Function to save menstrual history data to user_data.json
+  Future<void> _saveMenstrualData() async {
+    try {
+      // Get the directory where the app can store files
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/user_data.json';
+
+      // Create the file if it doesn't exist
+      File file = File(filePath);
+      if (!await file.exists()) {
+        await file.create();
+        await file.writeAsString(jsonEncode({})); // Initialize with an empty JSON object
+      }
+
+      // Read the existing JSON data from the file
+      String jsonString = await file.readAsString();
+      Map<String, dynamic> jsonData = jsonDecode(jsonString);
+
+      // Create menstrual history data entry
+      Map<String, dynamic> menstrualHistoryData = {
+        'menstrual_history': {
+          'age_at_first_period': _ageController.text,
+          'last_period_date': _lastPeriodController.text,
+          'is_period_normal': _isPeriodNormal,
+          'are_periods_regular': _arePeriodsRegular,
+          'period_gap': _periodGapController.text,
+          'cramp_severity': _crampSeverity,
+          'has_cramps': _hasCramps,
+          'cramp_medication': _crampMedicationController.text,
+          'spotting': _spotting,
+        },
+      };
+
+      // Check if 'menstrual_history' exists
+      if (jsonData.containsKey('menstrual_history')) {
+        // If it exists, update the existing data
+        jsonData['menstrual_history'] = menstrualHistoryData['menstrual_history'];
+      } else {
+        // If it doesn't exist, add the new data
+        jsonData['menstrual_history'] = menstrualHistoryData['menstrual_history'];
+      }
+
+      // Write the updated JSON data back to the file
+      await file.writeAsString(jsonEncode(jsonData));
+
+      print('Menstrual history data saved successfully at $filePath');
+    } catch (e) {
+      print('Error saving menstrual history data: $e');
+    }
   }
 
   Widget buildQuestionField(String question, TextEditingController controller) {

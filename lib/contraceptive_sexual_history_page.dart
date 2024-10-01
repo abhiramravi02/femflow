@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'fertility_treatment_history_page.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 
 class ContraceptiveSexualHistoryPage extends StatefulWidget {
   const ContraceptiveSexualHistoryPage({super.key});
@@ -110,6 +113,7 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
 
             ElevatedButton(
               onPressed: () {
+                _saveContraceptiveData(); // Save the data before navigating
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => const FertilityTreatmentHistoryPage()),
@@ -121,6 +125,52 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
         ),
       ),
     );
+  }
+
+  // Function to save contraceptive and sexual history data to user_data.json
+  Future<void> _saveContraceptiveData() async {
+    try {
+      // Get the directory where the app can store files
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/user_data.json';
+
+      // Create the file if it doesn't exist
+      File file = File(filePath);
+      if (!await file.exists()) {
+        await file.create();
+        await file.writeAsString(jsonEncode({})); // Initialize with an empty JSON object
+      }
+
+      // Read the existing JSON data from the file
+      String jsonString = await file.readAsString();
+      Map<String, dynamic> jsonData = jsonDecode(jsonString);
+
+      // Create contraceptive and sexual history data entry
+      Map<String, dynamic> contraceptiveData = {
+        'contraceptive_sexual_history': {
+          'methods_used': _selectedContraceptionMethods,
+          'periods_regular_after_pills': _periodsRegularAfterPills,
+          'timing_intercourse_around_ovulation': _timeIntercourseAroundOvulation,
+          'ovulation_timing_details': _timeIntercourseAroundOvulation ? _ovulationTimingDetailsController.text : null,
+        },
+      };
+
+      // Check if 'contraceptive_sexual_history' exists
+      if (jsonData.containsKey('contraceptive_sexual_history')) {
+        // If it exists, update the existing data
+        jsonData['contraceptive_sexual_history'] = contraceptiveData['contraceptive_sexual_history'];
+      } else {
+        // If it doesn't exist, add the new data
+        jsonData['contraceptive_sexual_history'] = contraceptiveData['contraceptive_sexual_history'];
+      }
+
+      // Write the updated JSON data back to the file
+      await file.writeAsString(jsonEncode(jsonData));
+
+      print('Contraceptive and sexual history data saved successfully at $filePath');
+    } catch (e) {
+      print('Error saving contraceptive and sexual history data: $e');
+    }
   }
 
   Widget buildQuestionField(String question, TextEditingController controller) {
