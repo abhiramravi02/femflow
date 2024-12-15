@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart'; // Import this for file path access
+import 'submit_data.dart';
 
 class FamilyHistoryPage extends StatefulWidget {
   const FamilyHistoryPage({super.key});
@@ -177,8 +178,17 @@ class _FamilyHistoryPageState extends State<FamilyHistoryPage> {
 
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 _saveData(); // Call the save data function
+                final directory = await getApplicationDocumentsDirectory();
+                final filePath = '${directory.path}/user_data.json';
+                File file = File(filePath);
+                if (await file.exists()) {
+                String jsonData = await file.readAsString();
+                final Map<String, dynamic> data = json.decode(jsonData);
+                SubmitData submitData = SubmitData();
+                await submitData.convertJsonToPdf(data);
+                }
                 print("Submitted");
               },
               child: const Text('Submit'),

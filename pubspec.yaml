@@ -1,4 +1,4 @@
-name: sample
+name: femflow
 description: "A new Flutter project."
 
 # The following line prevents the package from being accidentally published to
@@ -14,8 +14,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_core: 2.32.0
-  cloud_firestore: 4.10.0
+  pdf: ^3.11.1
+  firebase_auth: ^4.7.1
+  firebase_core: ^2.32.0
+  firebase_storage: ^11.6.5
+  cloud_firestore: ^4.10.0
   path_provider: ^2.0.11
   cupertino_icons: 1.0.8  # Moved cupertino_icons here for proper dependency declaration
 
