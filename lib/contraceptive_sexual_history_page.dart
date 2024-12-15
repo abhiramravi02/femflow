@@ -26,6 +26,7 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contraceptive / Sexual History'),
+        backgroundColor: Colors.teal,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -37,7 +38,10 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            const Text('1. What form of contraception do you use now or have you used in the past?'),
+            const Text(
+              '1. What form of contraception do you use now or have you used in the past?',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 10.0,
@@ -59,7 +63,10 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
             ),
             const SizedBox(height: 16),
 
-            const Text('2. If you\'ve ever been on oral contraceptives (pills), were your periods regular after stopping the pills?'),
+            const Text(
+              '2. If you\'ve ever been on oral contraceptives (pills), were your periods regular after stopping the pills?',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             Row(
               children: [
                 Checkbox(
@@ -84,7 +91,10 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
             ),
             const SizedBox(height: 16),
 
-            const Text('3. Do you time intercourse around ovulation?'),
+            const Text(
+              '3. Do you time intercourse around ovulation?',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             Row(
               children: [
                 Checkbox(
@@ -120,6 +130,13 @@ class _ContraceptiveSexualHistoryPageState extends State<ContraceptiveSexualHist
                 );
               },
               child: const Text('Next'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ],
         ),

@@ -5,7 +5,7 @@ import 'package:pdf/widgets.dart' as pw;
 
 class SubmitData {
   // Method to convert JSON data to a PDF file with tables and pagination
-  Future<void> convertJsonToPdf(Map<String, dynamic> jsonData) async {
+  Future<void> convertJsonToPdf(Map<String, dynamic> jsonData, List<File> images) async {
     try {
       // Create a new PDF document
       final pdf = pw.Document();
@@ -16,7 +16,7 @@ class SubmitData {
           pageFormat: PdfPageFormat.a4,
           build: (pw.Context context) {
             return [
-              buildSectionTable('Home Page Data', [
+              buildSectionTable('Personal Details', [
                 ['Field', 'Value'],
                 ['Name', jsonData['home_page_data']['name'] ?? ''],
                 ['Age', jsonData['home_page_data']['age'] ?? ''],
@@ -138,6 +138,15 @@ class SubmitData {
                 ['High Blood Pressure', jsonData['family_history']['high_blood_pressure'].toString()],
                 ['Other Conditions', jsonData['family_history']['other_conditions'] ?? ''],
               ]),
+              pw.SizedBox(height: 10),
+              ...images.map((image) {
+                final imageBytes = image.readAsBytesSync();
+                final pdfImage = pw.MemoryImage(imageBytes);
+                return pw.Image(pdfImage); // PDF-specific widget
+              }).toList(),
+
+
+              pw.SizedBox(height: 10),
             ];
           },
         ),

@@ -21,7 +21,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home page'),
+        title: const Text('Personal Information'),
+        centerTitle: true,
+        backgroundColor: Colors.teal,
+        elevation: 5,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -29,21 +32,33 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildQuestionField('1. What is your name?', _question1Controller),
+            const Text(
+              'Please fill out the form below:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 16),
-            buildQuestionField('2. What is your age?', _question2Controller),
+            buildQuestionCard('1. What is your name?', _question1Controller),
             const SizedBox(height: 16),
-            buildQuestionField('3. What is your favorite hobby?', _question3Controller),
+            buildQuestionCard('2. What is your age?', _question2Controller),
             const SizedBox(height: 16),
-            buildQuestionField('4. What is your profession?', _question4Controller),
+            buildQuestionCard('3. What is your favorite hobby?', _question3Controller),
+            const SizedBox(height: 16),
+            buildQuestionCard('4. What is your profession?', _question4Controller),
             const SizedBox(height: 32),
             Center(
               child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
                 onPressed: () async {
                   // Collect data from text fields
                   Map<String, String> homePageData = {
@@ -62,7 +77,10 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => const MenstrualHistoryPage()),
                   );
                 },
-                child: const Text('Next'),
+                child: const Text(
+                  'Next',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],
@@ -71,65 +89,52 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildQuestionField(String question, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          question,
-          style: const TextStyle(fontSize: 16),
+  Widget buildQuestionCard(String question, TextEditingController controller) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              question,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: controller,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter your answer',
+              ),
+            ),
+          ],
         ),
-        TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter your answer',
-          ),
-        ),
-      ],
+      ),
     );
   }
 
   Future<void> _saveDataToJson(Map<String, String> data) async {
     try {
-      // Get the directory where the app can store files
       final directory = await getApplicationDocumentsDirectory();
       final filePath = '${directory.path}/user_data.json';
 
-      // Create the file if it doesn't exist
       File file = File(filePath);
       if (!await file.exists()) {
-        // If file does not exist, create a new one
         await file.create();
-        await file.writeAsString(jsonEncode({})); // Initialize with an empty JSON object
+        await file.writeAsString(jsonEncode({}));
       }
 
-      // Read the existing JSON data from the file
       String jsonString = await file.readAsString();
       Map<String, dynamic> jsonData = jsonDecode(jsonString);
 
-      // Check if 'home_page_data' exists
-      if (jsonData.containsKey('home_page_data')) {
-        // If it exists, update the existing data
-        jsonData['home_page_data'] = {
-          'name': data['name'],
-          'age': data['age'],
-          'hobby': data['hobby'],
-          'profession': data['profession'],
-        };
-      } else {
-        // If it doesn't exist, add the new data
-        jsonData['home_page_data'] = {
-          'name': data['name'],
-          'age': data['age'],
-          'hobby': data['hobby'],
-          'profession': data['profession'],
-        };
-      }
+      jsonData['home_page_data'] = data;
 
-      // Write the updated JSON data back to the file
       await file.writeAsString(jsonEncode(jsonData));
-
       print('Data saved successfully at $filePath');
     } catch (e) {
       print('Error saving data: $e');

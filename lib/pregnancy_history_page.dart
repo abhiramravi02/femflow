@@ -32,6 +32,7 @@ class _PregnancyHistoryPageState extends State<PregnancyHistoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pregnancy History'),
+        backgroundColor: Colors.teal, // Set a color like in the previous page
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -43,150 +44,99 @@ class _PregnancyHistoryPageState extends State<PregnancyHistoryPage> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            const Text('a) Did you have term pregnancies previously?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _hadTermPregnancies,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadTermPregnancies = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_hadTermPregnancies,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadTermPregnancies = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            _buildCard(
+              'a) Did you have term pregnancies previously?',
+              _buildCheckboxRow(
+                options: ['Yes', 'No'],
+                value: _hadTermPregnancies,
+                onChanged: (value) {
+                  setState(() {
+                    _hadTermPregnancies = value;
+                  });
+                },
+              ),
+              controller: _termPregnanciesController,
+              showTextField: _hadTermPregnancies,
             ),
-            if (_hadTermPregnancies)
-              buildQuestionField('If yes, then how many', _termPregnanciesController),
             const SizedBox(height: 16),
-
-            const Text('b) Did you have preterm pregnancies/deliveries previously?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _hadPretermPregnancies,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadPretermPregnancies = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_hadPretermPregnancies,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadPretermPregnancies = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            _buildCard(
+              'b) Did you have preterm pregnancies/deliveries previously?',
+              _buildCheckboxRow(
+                options: ['Yes', 'No'],
+                value: _hadPretermPregnancies,
+                onChanged: (value) {
+                  setState(() {
+                    _hadPretermPregnancies = value;
+                  });
+                },
+              ),
+              controller: _pretermHealthDetailsController,
+              showTextField: _hadPretermPregnancies,
             ),
-            if (_hadPretermPregnancies)
-              buildQuestionField('If yes, give details of health of the delivered baby', _pretermHealthDetailsController),
             const SizedBox(height: 16),
-
-            const Text('c) Did you have natural abortions earlier?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _hadNaturalAbortions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadNaturalAbortions = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_hadNaturalAbortions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadNaturalAbortions = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            _buildCard(
+              'c) Did you have natural abortions earlier?',
+              _buildCheckboxRow(
+                options: ['Yes', 'No'],
+                value: _hadNaturalAbortions,
+                onChanged: (value) {
+                  setState(() {
+                    _hadNaturalAbortions = value;
+                  });
+                },
+              ),
+              controller: _naturalAbortionsCountController,
+              showTextField: _hadNaturalAbortions,
             ),
-            if (_hadNaturalAbortions)
-              buildQuestionField('If yes, how many', _naturalAbortionsCountController),
             const SizedBox(height: 16),
-
-            const Text('d) Did you have medical termination of pregnancy (medical abortions) previously?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _hadMedicalAbortions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadMedicalAbortions = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_hadMedicalAbortions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadMedicalAbortions = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            _buildCard(
+              'd) Did you have medical termination of pregnancy (medical abortions) previously?',
+              _buildCheckboxRow(
+                options: ['Yes', 'No'],
+                value: _hadMedicalAbortions,
+                onChanged: (value) {
+                  setState(() {
+                    _hadMedicalAbortions = value;
+                  });
+                },
+              ),
+              controller: _medicalAbortionsCountController,
+              showTextField: _hadMedicalAbortions,
             ),
-            if (_hadMedicalAbortions)
-              buildQuestionField('If yes, how many', _medicalAbortionsCountController),
             const SizedBox(height: 16),
-
-            const Text('e) Did you have Ectopic pregnancy/tubal pregnancy previously?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _hadEctopicPregnancies,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadEctopicPregnancies = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_hadEctopicPregnancies,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _hadEctopicPregnancies = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            _buildCard(
+              'e) Did you have Ectopic pregnancy/tubal pregnancy previously?',
+              _buildCheckboxRow(
+                options: ['Yes', 'No'],
+                value: _hadEctopicPregnancies,
+                onChanged: (value) {
+                  setState(() {
+                    _hadEctopicPregnancies = value;
+                  });
+                },
+              ),
+              controller: _ectopicPregnanciesCountController,
+              showTextField: _hadEctopicPregnancies,
             ),
-            if (_hadEctopicPregnancies)
-              buildQuestionField('If yes, how many', _ectopicPregnanciesCountController),
-            const SizedBox(height: 16),
-
-            ElevatedButton(
-              onPressed: () {
-                _savePregnancyData(); // Save the data before navigating
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ContraceptiveSexualHistoryPage()),
-                );
-              },
-              child: const Text('Next'),
+            const SizedBox(height: 32),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  _savePregnancyData(); // Save the data before navigating
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ContraceptiveSexualHistoryPage()),
+                  );
+                },
+                child: const Text('Next'),
+              ),
             ),
           ],
         ),
@@ -194,25 +144,77 @@ class _PregnancyHistoryPageState extends State<PregnancyHistoryPage> {
     );
   }
 
-  // Function to save pregnancy history data to user_data.json
+  Widget _buildCard(String title, Widget child, {TextEditingController? controller, bool showTextField = false}) {
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 8),
+            child,
+            if (showTextField)
+              _buildTextField(controller!),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCheckboxRow({
+    required List<String> options,
+    required bool value,
+    required Function(bool) onChanged,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: List.generate(options.length, (index) {
+        return Row(
+          children: [
+            Checkbox(
+              value: index == 0 ? value : !value,
+              onChanged: (value) => onChanged(index == 0),
+            ),
+            Text(options[index]),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: 'Enter your answer',
+        ),
+      ),
+    );
+  }
+
   Future<void> _savePregnancyData() async {
     try {
-      // Get the directory where the app can store files
       final directory = await getApplicationDocumentsDirectory();
       final filePath = '${directory.path}/user_data.json';
-
-      // Create the file if it doesn't exist
       File file = File(filePath);
+
       if (!await file.exists()) {
         await file.create();
-        await file.writeAsString(jsonEncode({})); // Initialize with an empty JSON object
+        await file.writeAsString(jsonEncode({}));
       }
 
-      // Read the existing JSON data from the file
       String jsonString = await file.readAsString();
       Map<String, dynamic> jsonData = jsonDecode(jsonString);
 
-      // Create pregnancy history data entry
       Map<String, dynamic> pregnancyHistoryData = {
         'pregnancy_history': {
           'had_term_pregnancies': _hadTermPregnancies,
@@ -228,41 +230,18 @@ class _PregnancyHistoryPageState extends State<PregnancyHistoryPage> {
         },
       };
 
-      // Check if 'pregnancy_history' exists
       if (jsonData.containsKey('pregnancy_history')) {
-        // If it exists, update the existing data
         jsonData['pregnancy_history'] = pregnancyHistoryData['pregnancy_history'];
       } else {
-        // If it doesn't exist, add the new data
         jsonData['pregnancy_history'] = pregnancyHistoryData['pregnancy_history'];
       }
 
-      // Write the updated JSON data back to the file
       await file.writeAsString(jsonEncode(jsonData));
 
       print('Pregnancy history data saved successfully at $filePath');
     } catch (e) {
       print('Error saving pregnancy history data: $e');
     }
-  }
-
-  Widget buildQuestionField(String question, TextEditingController controller) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          question,
-          style: const TextStyle(fontSize: 16),
-        ),
-        TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Enter your answer',
-          ),
-        ),
-      ],
-    );
   }
 
   @override

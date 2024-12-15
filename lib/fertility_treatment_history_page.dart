@@ -34,6 +34,7 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
     return Scaffold(
       appBar: AppBar(
         title: const Text('Fertility Treatment History'),
+        backgroundColor: Colors.teal,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -45,7 +46,10 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            const Text('1. Have you been treated for infertility before?'),
+            const Text(
+              '1. Have you been treated for infertility before?',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
             Row(
               children: [
                 Checkbox(
@@ -72,7 +76,10 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
               buildQuestionField('If yes, who was your physician?', _physicianController),
               buildQuestionField('Diagnosed cause?', _diagnosedCauseController),
               const SizedBox(height: 16),
-              const Text('Treatment History'),
+              const Text(
+                'Treatment History',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               buildTreatmentHistoryField('Intrauterine insemination', _iuiCyclesController, _iuiDatesController),
               buildTreatmentHistoryField('Clomid/Letrozole alone', _clomidAloneController, _clomidAloneDatesController),
               buildTreatmentHistoryField('Clomid/Letrozole with intrauterine insemination', _clomidWithIuiController, _clomidWithIuiDatesController),
@@ -91,6 +98,13 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
                 );
               },
               child: const Text('Next'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ],
         ),
@@ -106,6 +120,7 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
           question,
           style: const TextStyle(fontSize: 16),
         ),
+        const SizedBox(height: 8),
         TextField(
           controller: controller,
           decoration: const InputDecoration(
@@ -121,7 +136,7 @@ class _FertilityTreatmentHistoryPageState extends State<FertilityTreatmentHistor
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('$treatmentName (# Cycles and Dates)'),
+        Text('$treatmentName (# Cycles and Dates)', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
         const SizedBox(height: 8),
         Row(
           children: [

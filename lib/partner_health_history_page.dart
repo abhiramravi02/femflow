@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart'; // Import this for file path access
+import 'package:path_provider/path_provider.dart';
 import 'family_history_page.dart';
 
 class PartnersHealthHistoryPage extends StatefulWidget {
@@ -30,9 +30,11 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Partner's Health History"),
+        backgroundColor: Colors.teal,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -41,172 +43,149 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: ListView(
           children: [
             const Text(
-              'VII. Partner’s Health History',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Partner’s Health History',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
-            // Semen Analysis Question
-            const Text('Has your partner had a semen analysis?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _semenAnalysisDone,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _semenAnalysisDone = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_semenAnalysisDone,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _semenAnalysisDone = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
-            ),
-            if (_semenAnalysisDone)
-              Row(
-                children: [
-                  Checkbox(
-                    value: _semenAnalysisNormal,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _semenAnalysisNormal = value ?? false;
-                      });
-                    },
-                  ),
-                  const Text('Normal'),
-                  Checkbox(
-                    value: !_semenAnalysisNormal,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        _semenAnalysisNormal = !(value ?? true);
-                      });
-                    },
-                  ),
-                  const Text('Abnormal'),
-                ],
+            buildCard(
+              "Has your partner had a semen analysis?",
+              Switch(
+                value: _semenAnalysisDone,
+                onChanged: (value) {
+                  setState(() {
+                    _semenAnalysisDone = value;
+                  });
+                },
               ),
-
-            // Sperm Analysis Stats
-            if (_semenAnalysisDone) ...[
-              buildQuestionField('Sperm count:', _spermCountController),
-              buildQuestionField('Sperm motility:', _spermMotilityController),
-              buildQuestionField('TZI (Teratozoospermia index) levels:', _tziController),
-              buildQuestionField('UTI test:', _utiTestController),
-              buildQuestionField('White blood cells:', _wbcController),
-            ],
-
-            const SizedBox(height: 16),
-
-            // Partner Seeing Doctor Question
-            const Text('Is your partner seeing a doctor for evaluation of infertility?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _partnerSeeingDoctor,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _partnerSeeingDoctor = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_partnerSeeingDoctor,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _partnerSeeingDoctor = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+              child: _semenAnalysisDone
+                  ? Column(
+                children: [
+                  SwitchListTile(
+                    title: const Text('Normal'),
+                    value: _semenAnalysisNormal,
+                    onChanged: (value) {
+                      setState(() {
+                        _semenAnalysisNormal = value;
+                      });
+                    },
+                  ),
+                  buildQuestionField('Sperm count:', _spermCountController),
+                  buildQuestionField('Sperm motility:', _spermMotilityController),
+                  buildQuestionField('TZI (Teratozoospermia index) levels:', _tziController),
+                  buildQuestionField('UTI test:', _utiTestController),
+                  buildQuestionField('White blood cells:', _wbcController),
+                ],
+              )
+                  : null,
             ),
-            if (_partnerSeeingDoctor)
-              buildQuestionField('If yes, what is the diagnosis and how is he being treated?', _diagnosisController),
 
-            const SizedBox(height: 16),
-
-            // Fathered Child Question
-            const Text('Has he ever fathered a child previously, either with you or with other women?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _fatheredChild,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _fatheredChild = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_fatheredChild,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _fatheredChild = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            buildCard(
+              "Is your partner seeing a doctor for evaluation of infertility?",
+              Switch(
+                value: _partnerSeeingDoctor,
+                onChanged: (value) {
+                  setState(() {
+                    _partnerSeeingDoctor = value;
+                  });
+                },
+              ),
+              child: _partnerSeeingDoctor
+                  ? buildQuestionField('If yes, what is the diagnosis and how is he being treated?', _diagnosisController)
+                  : null,
             ),
-            if (_fatheredChild)
-              buildQuestionField('If yes, when?', _fatheredChildDateController),
 
-            const SizedBox(height: 16),
-
-            // Tuberculosis/UTI/STD Question
-            const Text('Is your partner ever diagnosed with Tuberculosis/UTI/STD?'),
-            Row(
-              children: [
-                Checkbox(
-                  value: _diagnosedWithConditions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _diagnosedWithConditions = value ?? false;
-                    });
-                  },
-                ),
-                const Text('Yes'),
-                Checkbox(
-                  value: !_diagnosedWithConditions,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _diagnosedWithConditions = !(value ?? true);
-                    });
-                  },
-                ),
-                const Text('No'),
-              ],
+            buildCard(
+              "Has he ever fathered a child previously, either with you or with other women?",
+              Switch(
+                value: _fatheredChild,
+                onChanged: (value) {
+                  setState(() {
+                    _fatheredChild = value;
+                  });
+                },
+              ),
+              child: _fatheredChild
+                  ? buildQuestionField('If yes, when?', _fatheredChildDateController)
+                  : null,
             ),
-            if (_diagnosedWithConditions) ...[
-              buildQuestionField('If Yes, mention details:', _conditionDetailsController),
-              buildQuestionField('Prescribed drugs/duration of therapy:', _prescribedDrugsController),
-            ],
+
+            buildCard(
+              "Is your partner ever diagnosed with Tuberculosis/UTI/STD?",
+              Switch(
+                value: _diagnosedWithConditions,
+                onChanged: (value) {
+                  setState(() {
+                    _diagnosedWithConditions = value;
+                  });
+                },
+              ),
+              child: _diagnosedWithConditions
+                  ? Column(
+                children: [
+                  buildQuestionField('If Yes, mention details:', _conditionDetailsController),
+                  buildQuestionField('Prescribed drugs/duration of therapy:', _prescribedDrugsController),
+                ],
+              )
+                  : null,
+            ),
 
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                _saveData(); // Call the save data function
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const FamilyHistoryPage()),
-                );
-              },
-              child: const Text('Next'),
+            SizedBox(
+              width: screenWidth * 0.8,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  _saveData();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const FamilyHistoryPage()),
+                  );
+                },
+                child: const Text('Next'),
+              ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildCard(String question, Widget trailing, {Widget? child}) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    question,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                trailing,
+              ],
+            ),
+            if (child != null) ...[
+              const SizedBox(height: 8),
+              child,
+            ],
           ],
         ),
       ),
@@ -221,6 +200,7 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
           question,
           style: const TextStyle(fontSize: 16),
         ),
+        const SizedBox(height: 8),
         TextField(
           controller: controller,
           decoration: const InputDecoration(
@@ -228,7 +208,7 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
             hintText: 'Enter your answer',
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -238,16 +218,13 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
     final filePath = '${directory.path}/user_data.json';
     File file = File(filePath);
 
-    // Check if the file exists
     if (!(await file.exists())) {
-      await file.create(); // Create the file if it doesn't exist
+      await file.create();
     }
 
-    // Read the existing data from the file
     String existingData = await file.readAsString();
     Map<String, dynamic> data = existingData.isNotEmpty ? json.decode(existingData) : {};
 
-    // Create a map for the new data
     Map<String, dynamic> partnerData = {
       'semen_analysis_done': _semenAnalysisDone,
       'semen_analysis_normal': _semenAnalysisNormal,
@@ -265,10 +242,8 @@ class _PartnersHealthHistoryPageState extends State<PartnersHealthHistoryPage> {
       'prescribed_drugs': _prescribedDrugsController.text,
     };
 
-    // Merge new data with existing data
     data['partner_health_history'] = partnerData;
 
-    // Write updated data back to the file
     await file.writeAsString(json.encode(data), flush: true);
   }
 
